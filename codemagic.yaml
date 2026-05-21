@@ -16,9 +16,16 @@ workflows:
       - name: Set Podfile minimum iOS version
         script: |
           sed -i 's/platform :ios, .*/platform :ios, '\''13.0'\''/' ios/Podfile
+      - name: Run pod install
+        script: |
+          cd ios && pod install --repo-update && cd ..
+      - name: List available schemes
+        script: |
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -list || xcodebuild -project Runner.xcodeproj -list
       - name: Build iOS for Simulator
         script: |
-          flutter build ios --simulator --no-codesign
+          flutter build ios --simulator --no-codesign 2>&1
     artifacts:
       - build/ios/iphonesimulator/Runner.app
     publishing:
