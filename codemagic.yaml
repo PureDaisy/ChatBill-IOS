@@ -1,7 +1,7 @@
 workflows:
   ios-app:
     name: iOS App
-    max_build_duration: 60
+    max_build_duration: 120
     environment:
       flutter: stable
       xcode: latest
@@ -12,9 +12,10 @@ workflows:
           flutter pub get
       - name: Set iOS Deployment Target
         script: |
-          cd ios
-          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 13.0/' Runner.xcodeproj/project.pbxproj
-          cd ..
+          sed -i 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 13.0/' ios/Runner.xcodeproj/project.pbxproj
+      - name: Set Podfile minimum iOS version
+        script: |
+          sed -i 's/platform :ios, .*/platform :ios, '\''13.0'\''/' ios/Podfile
       - name: Build iOS for Simulator
         script: |
           flutter build ios --simulator --no-codesign
@@ -23,9 +24,8 @@ workflows:
     publishing:
       email:
         recipients:
-          - your_email@example.com
+          - 1571461819@qq.com
         notify:
           on_build_start: false
           on_build_success: true
           on_build_failure: true
-
