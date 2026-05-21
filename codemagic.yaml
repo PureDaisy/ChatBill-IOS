@@ -32,7 +32,3 @@ workflows:
       email:
         recipients:
           - 1571461819@qq.com
-        notify:
-          on_build_start: false
-          on_build_success: true
-          on_build_failure: true
