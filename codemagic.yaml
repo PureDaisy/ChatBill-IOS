@@ -4,9 +4,6 @@ workflows:
 
     max_build_duration: 120
 
-    integrations:
-      developer_portal: Codemagic
-
     environment:
       flutter: stable
       xcode: latest
@@ -14,8 +11,6 @@ workflows:
 
       vars:
         APP_ID: 6742501423
-        APPLE_ID: ""
-        APP_SPECIFIC_PASSWORD: ""
 
       ios_signing:
         distribution_type: app_store
