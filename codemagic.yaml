@@ -6,6 +6,7 @@ workflows:
 
     integrations:
       developer_portal: Codemagic
+      app_store_connect: Codemagic
 
     environment:
       flutter: stable
