@@ -1,28 +1,24 @@
 workflows:
   ios-app:
     name: iOS App
-
     max_build_duration: 120
-
+    
     integrations:
-      app_store_connect: Codemagic   # ⭐关键补这一行
-
+      app_store_connect: Codemagic
+    
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
 
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.chatbill.app
+    ios_signing:
+      distribution_type: app_store
+      bundle_identifier: com.chatbill.app
+      api_key: INTEGRATION   # 添加这行，让 Codemagic 自动管理签名
 
     scripts:
       - flutter pub get
-
-      - cd ios && pod install --repo-update && cd ..
-
-      - xcode-project use-profiles
-
+      - cd ios && pod install && cd ..
       - flutter build ipa --release
 
     artifacts:
@@ -32,7 +28,6 @@ workflows:
       app_store_connect:
         auth: integration
         submit_to_testflight: true
-
       email:
         recipients:
           - 1571461819@qq.com
