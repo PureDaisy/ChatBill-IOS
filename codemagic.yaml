@@ -9,9 +9,6 @@ workflows:
       xcode: latest
       cocoapods: default
 
-      groups:
-        - chatbill
-
       vars:
         APP_ID: 6742501423
 
