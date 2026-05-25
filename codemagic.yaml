@@ -5,7 +5,7 @@ workflows:
     max_build_duration: 120
 
     integrations:
-      app_store_connect: Codemagic   # ⭐关键补这一行
+      app_store_connect: Codemagic
 
     environment:
       flutter: stable
@@ -17,16 +17,30 @@ workflows:
         bundle_identifier: com.chatbill.app
 
     scripts:
-      - flutter pub get
+      - name: Get dependencies
+        script: flutter pub get
 
-      - cd ios && pod install --repo-update && cd ..
+      - name: Install CocoaPods
+        script: |
+          cd ios
+          pod install --repo-update
+          cd ..
 
-      - xcode-project use-profiles
+      - name: Set up code signing
+        script: xcode-project use-profiles
 
-      - flutter build ipa --release
+      - name: Build IPA
+        script: |
+          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+
+      - name: Debug IPA output
+        script: |
+          find build -name "*.ipa" || true
 
     artifacts:
       - build/ios/ipa/*.ipa
+      - build/ios/**/*.xcarchive
+      - /tmp/xcodebuild_logs/*.log
 
     publishing:
       app_store_connect:
