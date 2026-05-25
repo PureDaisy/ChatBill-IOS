@@ -5,7 +5,7 @@ workflows:
     max_build_duration: 120
 
     integrations:
-      app_store_connect: Codemagic
+      developer_portal: Codemagic
 
     environment:
       flutter: stable
@@ -41,7 +41,11 @@ workflows:
       - flutter_drive.log
 
     publishing:
+      # For publishing to work, you need to set up App Store Connect integration in Codemagic
+      # Go to: Settings > Developer integrations > App Store Connect
+      # Then select "Codemagic" integration and upload your API key
       app_store_connect:
+        integration: Codemagic
         submit_to_testflight: true
 
       email:
