@@ -16,8 +16,6 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.chatbill.app
 
-      automatic_code_signing: true
-
     scripts:
       - name: Clean
         script: flutter clean
