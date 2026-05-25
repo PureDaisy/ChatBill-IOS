@@ -29,20 +29,21 @@ workflows:
 
       - name: Fetch signing files
         script: |
-          app-store-connect fetch-signing-files "com.chatbill.app" --type IOS_APP_STORE --create
+          app-store-connect fetch-signing-files \
+          "com.chatbill.app" \
+          --type IOS_APP_STORE \
+          --create
 
       - name: Set up code signing
         script: |
           xcode-project use-profiles
 
-      - name: Flutter build IPA
+      - name: Build IPA
         script: |
           flutter build ipa --release
 
     artifacts:
       - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
-      - flutter_drive.log
 
     publishing:
       email:
