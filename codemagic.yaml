@@ -6,16 +6,21 @@ workflows:
 
     integrations:
       developer_portal: Codemagic
-      app_store_connect: Codemagic
 
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
 
+      vars:
+        APP_ID: 6742501423
+
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.chatbill.app
+
+      secure:
+        - APP_STORE_CONNECT_PRIVATE_KEY: ./AuthKey_5BXSXXF8YL.p8
 
     scripts:
       - name: Get Flutter dependencies
@@ -42,11 +47,9 @@ workflows:
       - flutter_drive.log
 
     publishing:
-      # For publishing to work, you need to set up App Store Connect integration in Codemagic
-      # Go to: Settings > Developer integrations > App Store Connect
-      # Then select "Codemagic" integration and upload your API key
       app_store_connect:
-        integration: Codemagic
+        key_id: 5BXSXXF8YL
+        issuer_id: 7e9d4ec7-df95-4156-9c2c-706181fb9d53
         submit_to_testflight: true
 
       email:
