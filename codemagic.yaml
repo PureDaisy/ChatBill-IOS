@@ -1,6 +1,6 @@
 workflows:
   ios-app:
-    name: iOS App
+    name: iOS Production
 
     max_build_duration: 120
 
@@ -17,7 +17,10 @@ workflows:
         bundle_identifier: com.chatbill.app
 
     scripts:
-      - name: Clean
+      # =========================
+      # 1. Clean & Dependencies
+      # =========================
+      - name: Clean project
         script: flutter clean
 
       - name: Get dependencies
@@ -29,19 +32,42 @@ workflows:
           pod install --repo-update
           cd ..
 
+      # =========================
+      # 2. Auto build number
+      # =========================
+      - name: Set build number
+        script: |
+          VERSION=$(grep version: pubspec.yaml | awk '{print $2}')
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          echo "Version: $VERSION+$BUILD_NUMBER"
+
+      # =========================
+      # 3. Code signing
+      # =========================
       - name: Set up code signing
         script: |
           xcode-project use-profiles
 
+      # =========================
+      # 4. Build IPA (stable mode)
+      # =========================
       - name: Build IPA
         script: |
-          flutter build ipa --release --export-method app-store
+          flutter build ipa \
+            --release \
+            --export-method app-store
 
-      - name: Debug
-        script: find build -name "*.ipa" || true
+      # =========================
+      # 5. Debug output
+      # =========================
+      - name: Verify artifacts
+        script: |
+          echo "Checking IPA output..."
+          find build -name "*.ipa" || true
 
     artifacts:
       - build/ios/**/*.ipa
+      - /tmp/xcodebuild_logs/*.log
 
     publishing:
       app_store_connect:
