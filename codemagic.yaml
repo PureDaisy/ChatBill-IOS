@@ -19,9 +19,6 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.chatbill.app
 
-      secure:
-        - APP_STORE_CONNECT_PRIVATE_KEY: ./AuthKey_5BXSXXF8YL.p8
-
     scripts:
       - name: Get Flutter dependencies
         script: |
