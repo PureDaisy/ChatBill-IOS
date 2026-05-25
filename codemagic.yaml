@@ -14,6 +14,8 @@ workflows:
 
       vars:
         APP_ID: 6742501423
+        APPLE_ID: ""
+        APP_SPECIFIC_PASSWORD: ""
 
       ios_signing:
         distribution_type: app_store
@@ -45,8 +47,8 @@ workflows:
 
     publishing:
       app_store_connect:
-        key_id: 5BXSXXF8YL
-        issuer_id: 7e9d4ec7-df95-4156-9c2c-706181fb9d53
+        apple_id: $APPLE_ID
+        app_specific_password: $APP_SPECIFIC_PASSWORD
         submit_to_testflight: true
 
       email:
