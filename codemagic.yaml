@@ -1,6 +1,6 @@
 workflows:
   ios-app:
-    name: iOS App (Stable Xcode Build)
+    name: iOS App
 
     max_build_duration: 120
 
@@ -9,7 +9,7 @@ workflows:
 
     environment:
       flutter: stable
-      xcode: 15.2
+      xcode: latest
       cocoapods: default
 
       ios_signing:
@@ -17,10 +17,10 @@ workflows:
         bundle_identifier: com.chatbill.app
 
     scripts:
-      - name: Clean project
+      - name: Clean
         script: flutter clean
 
-      - name: Get Flutter dependencies
+      - name: Get dependencies
         script: flutter pub get
 
       - name: Install CocoaPods
@@ -29,11 +29,15 @@ workflows:
           pod install --repo-update
           cd ..
 
-      - name: Apply signing profiles
+      - name: Set up code signing
         script: |
           xcode-project use-profiles
 
-      - name: Build IPA (Xcode stable export)
+      - name: Build iOS archive
+        script: |
+          flutter build ios --release --no-codesign
+
+      - name: Create IPA (Codemagic export)
         script: |
           xcode-project build-ipa \
             --workspace ios/Runner.xcworkspace \
@@ -43,7 +47,6 @@ workflows:
     artifacts:
       - build/ios/ipa/*.ipa
       - build/ios/archive/*.xcarchive
-      - /tmp/xcodebuild_logs/*.log
 
     publishing:
       app_store_connect:
