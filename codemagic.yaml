@@ -26,6 +26,15 @@ workflows:
           pod install --repo-update
           cd ..
 
+      - name: Set up keychain
+        script: keychain initialize
+
+      - name: Fetch signing files
+        script: app-store-connect fetch-signing-files "com.chatbill.app" --type APPSTORE --create
+
+      - name: Add certificates
+        script: keychain add-certificates
+
       - name: Set up code signing
         script: xcode-project use-profiles
 
