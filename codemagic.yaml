@@ -17,9 +17,6 @@ workflows:
         bundle_identifier: com.chatbill.app
 
     scripts:
-      - name: Clean
-        script: flutter clean
-
       - name: Get dependencies
         script: flutter pub get
 
@@ -30,23 +27,13 @@ workflows:
           cd ..
 
       - name: Set up code signing
-        script: |
-          xcode-project use-profiles
+        script: xcode-project use-profiles
 
-      - name: Build iOS archive
-        script: |
-          flutter build ios --release --no-codesign
-
-      - name: Create IPA (Codemagic export)
-        script: |
-          xcode-project build-ipa \
-            --workspace ios/Runner.xcworkspace \
-            --scheme Runner \
-            --export-method app-store
+      - name: Build IPA
+        script: flutter build ipa --release
 
     artifacts:
       - build/ios/ipa/*.ipa
-      - build/ios/archive/*.xcarchive
 
     publishing:
       app_store_connect:
